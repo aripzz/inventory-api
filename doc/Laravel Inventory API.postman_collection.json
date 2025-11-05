@@ -1,0 +1,681 @@
+{
+	"info": {
+		"_postman_id": "31c72a3a-784b-41dc-a3ec-68ca8bdb087d",
+		"name": "Laravel Inventory API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2819107"
+	},
+	"item": [
+		{
+			"name": "I. AUTHENTICATION",
+			"item": [
+				{
+					"name": "1. REGISTER (Initial Setup)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Admin User",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "admin@example.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password123",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "password123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. LOGIN & GET TOKEN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();",
+									"",
+									"if (pm.response.code === 200 && responseJson.token) {",
+									"    // Menyimpan token ke Environment variable",
+									"    pm.environment.set(\"token\", responseJson.token);",
+									"    pm.environment.set(\"user_id\", responseJson.user.id);",
+									"    console.log(\"Token berhasil disimpan: \" + responseJson.token);",
+									"} else {",
+									"    console.log(\"Login gagal atau token tidak ditemukan.\");",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "admin@example.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "II. CRUD PRODUK",
+			"item": [
+				{
+					"name": "1. CREATE Produk A",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();",
+									"if (pm.response.code === 201 && responseJson.id) {",
+									"    pm.environment.set(\"produk_id\", responseJson.id);",
+									"    console.log(\"Produk ID berhasil disimpan: \" + responseJson.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "kode_produk",
+									"value": "PRD-LPT01",
+									"type": "text"
+								},
+								{
+									"key": "nama_produk",
+									"value": "Laptop Seri X",
+									"type": "text"
+								},
+								{
+									"key": "kategori",
+									"value": "Elektronik",
+									"type": "text"
+								},
+								{
+									"key": "satuan",
+									"value": "Unit",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/produks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. GET All Produk",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/produks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. GET Produk by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/produks/{{produk_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produks",
+								"{{produk_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. UPDATE Produk",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "satuan",
+									"value": "Pcs",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/produks/{{produk_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produks",
+								"{{produk_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5. DELETE Produk",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/produks/{{produk_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produks",
+								"{{produk_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			}
+		},
+		{
+			"name": "III. CRUD LOKASI & STOK PIVOT",
+			"item": [
+				{
+					"name": "1. CREATE Lokasi A",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();",
+									"if (pm.response.code === 201 && responseJson.id) {",
+									"    pm.environment.set(\"lokasi_id\", responseJson.id);",
+									"    console.log(\"Lokasi ID berhasil disimpan: \" + responseJson.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "kode_lokasi",
+									"value": "GDG-UTM",
+									"type": "text"
+								},
+								{
+									"key": "nama_lokasi",
+									"value": "Gudang Utama",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/lokasis",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"lokasis"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. SET STOK Awal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();",
+									"if (pm.response.code === 200 && responseJson.produk_lokasi.id) {",
+									"    pm.environment.set(\"produk_lokasi_id\", responseJson.produk_lokasi.id);",
+									"    console.log(\"Pivot ID berhasil disimpan: \" + responseJson.produk_lokasi.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "lokasi_id",
+									"value": "{{lokasi_id}}",
+									"type": "text"
+								},
+								{
+									"key": "stok",
+									"value": "100",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/produks/{{produk_id}}/stok",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produks",
+								"{{produk_id}}",
+								"stok"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			}
+		},
+		{
+			"name": "IV. CRUD MUTASI & LOGIKA STOK",
+			"item": [
+				{
+					"name": "1. Mutasi MASUK (+Stok)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();",
+									"if (pm.response.code === 201 && responseJson.mutasi.id) {",
+									"    pm.environment.set(\"mutasi_masuk_id\", responseJson.mutasi.id);",
+									"    console.log(\"Mutasi MASUK ID berhasil disimpan: \" + responseJson.mutasi.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "produk_lokasi_id",
+									"value": "{{produk_lokasi_id}}",
+									"type": "text"
+								},
+								{
+									"key": "tanggal",
+									"value": "2025-11-03",
+									"type": "text"
+								},
+								{
+									"key": "jenis_mutasi",
+									"value": "MASUK",
+									"type": "text"
+								},
+								{
+									"key": "jumlah",
+									"value": "50",
+									"type": "text"
+								},
+								{
+									"key": "keterangan",
+									"value": "Penerimaan barang dari supplier X",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/mutasis",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mutasis"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Mutasi KELUAR (-Stok)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "produk_lokasi_id",
+									"value": "{{produk_lokasi_id}}",
+									"type": "text"
+								},
+								{
+									"key": "tanggal",
+									"value": "2025-11-04",
+									"type": "text"
+								},
+								{
+									"key": "jenis_mutasi",
+									"value": "KELUAR",
+									"type": "text"
+								},
+								{
+									"key": "jumlah",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "keterangan",
+									"value": "Pengiriman ke cabang Y",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/mutasis",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mutasis"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. GET All Mutasi",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/mutasis",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mutasis"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. DELETE Mutasi (+Revert Stok)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/mutasis/{{mutasi_masuk_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mutasis",
+								"{{mutasi_masuk_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			}
+		},
+		{
+			"name": "V. HISTORY MUTASI",
+			"item": [
+				{
+					"name": "1. History Mutasi per Produk",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/produks/{{produk_id}}/history-mutasi",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produks",
+								"{{produk_id}}",
+								"history-mutasi"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. History Mutasi per User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}/history-mutasi",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}",
+								"history-mutasi"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			}
+		},
+		{
+			"name": "VI. USER (CRUD Lanjutan)",
+			"item": [
+				{
+					"name": "1. GET Current User (Built-in)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. GET All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. UPDATE User Detail",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Admin New Name",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			}
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	}
+}
