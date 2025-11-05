@@ -153,6 +153,8 @@ Semua *endpoint* CRUD dan History memerlukan *header*: `Authorization: Bearer <T
   * **Lokasi:** `GET/POST/PUT/DELETE /api/lokasis`
   * **Mutasi:** `GET/POST/PUT/DELETE /api/mutasis`
   * **History:** `GET /api/produks/{id}/history-mutasi`
+  
+untuk documentasi API bisa di check di folder 'doc'
 
 <!-- end list -->
 
