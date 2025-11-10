@@ -1,0 +1,26 @@
+{
+  "$schema": "https://railway.com/railway.schema.json",
+  "build": {
+    // Menghapus builder Dockerfile
+    // Railway akan menggunakan Nixpacks atau Buildpack (otomatis)
+    // untuk mendeteksi framework Anda (misalnya: PHP/Laravel).
+    "builder": "NIXPACKS" 
+  },
+  "deploy": {
+    "runtime": "V2",
+    "numReplicas": 1,
+    "sleepApplication": false,
+    "useLegacyStacker": false,
+    "multiRegionConfig": {
+      "asia-southeast1-eqsg3a": {
+        "numReplicas": 1
+      }
+    },
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10,
+    // ===============================================
+    // BARIS KRUSIAL: Menambahkan Perintah Start
+    // ===============================================
+    "startCommand": "php artisan migrate --force && php artisan serve --host 0.0.0.0 --port $PORT" 
+  }
+}
